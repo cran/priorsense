@@ -1,6 +1,6 @@
-9344749d93fe06a844e06bcb644be7dc *DESCRIPTION
+1a3387773519eeee0c65ad915deaa0df *DESCRIPTION
 df483bcee405aa683da1581da948e8dc *NAMESPACE
-0ebd1c893722c548dd975ecad8cb3e33 *NEWS.md
+0c77854a8d555da6713e63a2d8ab5d35 *NEWS.md
 72d7c211c21ac8c565cc396f926be280 *R/additional_divergence_measures.R
 98f5aa43f4f16264f33f32a6106fe655 *R/brms-functions.R
 d30216cba83266dcb492e885ab7f7c9c *R/cjs.R
@@ -32,11 +32,11 @@ fef6aaeca05698a2c7693fc34561929d *R/sysdata.rda
 4b1ca015cabc5834e408984e2028c538 *R/whiten_draws.R
 5b25d24358fe5d97bb35b79c5eb5803a *README.md
 84148cee836c991fd15aef9def555081 *build/vignette.rds
-1824da161f66306534fea0b924f8c02f *inst/CITATION
+3d5ca37a3e40204a9ffd6693efca0627 *inst/CITATION
 bb6a05c8f678cec6689c64bee813f181 *inst/doc/powerscaling.R
-f4783b5740588ab36e7070273f0c0905 *inst/doc/powerscaling.Rmd
-c751105bdc1b3e9bca3b5f95bb662c48 *inst/doc/powerscaling.html
-2ea05310bfb8bd66aad0d6bd95e54021 *inst/logo/logo.R
+31ed2a4f54184e743c5fde838a897f82 *inst/doc/powerscaling.Rmd
+29fbe80935ea69d0867f8d2c89bc0a22 *inst/doc/powerscaling.html
+e65b2900958254276cfd18e0d8d1bd16 *inst/logo/logo.R
 e93121f4b2bd706f26b457f0901410fe *man/cjs_dist.Rd
 1ebfc4479b55da9abf298c4baf66d75b *man/create-priorsense-data.Rd
 1039cc3d44459b6216efa7629b2a67c8 *man/example_powerscale_model.Rd
@@ -46,6 +46,7 @@ e93121f4b2bd706f26b457f0901410fe *man/cjs_dist.Rd
 0c0a1647bf1181e0ea912dbbc97dce9c *man/figures/README-quants_plot-1.png
 4bca632db07f27db83fcef003e578520 *man/figures/README-quants_plot_mm-1.png
 a823f748ea1e8099be34925f37482135 *man/figures/logo.png
+311c9c865439a155eb077f6c26bf3e41 *man/figures/logo_large.png
 58bc64df5519227bac1d7ffcb103c31d *man/log_lik_draws.Rd
 80b8e85817836f27a042ae9c9b85b49e *man/log_prior_draws.Rd
 df416f00405bda65c9769d3f5349c531 *man/measure_divergence.Rd
@@ -55,7 +56,7 @@ fbb4a26152f19f427045ab115056df76 *man/powerscale-sensitivity.Rd
 85e8e53865687085ff76f832c07a442e *man/powerscale_derivative.Rd
 5c653cf158872357ac15ae713ec32270 *man/powerscale_plots.Rd
 0e4f9d0a6d7f1269ec3ff1cce688db43 *man/predictions_as_draws.Rd
-a288ef7c3fbb155c1caefea07181dedc *man/priorsense-package.Rd
+468a3975a96ff8125cac97f9c3e498af *man/priorsense-package.Rd
 5846811ae0bc7c33247dc2740c321d62 *man/scaled_log_ratio.Rd
 50742780d2d675af124b4c52812980ab *man/weighted_quantities.Rd
 3174ddd65d970d858d579eb88b308276 *man/weighted_summary_measures.Rd
@@ -70,4 +71,4 @@ a933fbe10277a321a6c28d9f25b5c01f *tests/testthat/test_plots.R
 b8a173f12bffe6b6ae6885f6dc03c0c4 *tests/testthat/test_resample.R
 919286e3965a7ff04fc7848062a37508 *tests/testthat/test_rstan.R
 79a9e3ef688c2990e50b0b0af75994eb *tests/testthat/test_weighted.R
-f4783b5740588ab36e7070273f0c0905 *vignettes/powerscaling.Rmd
+31ed2a4f54184e743c5fde838a897f82 *vignettes/powerscaling.Rmd

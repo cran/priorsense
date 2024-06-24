@@ -347,7 +347,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>We have 100 data points for <span class="math inline">\(y\)</span> We first fit the model using Stan:</p>
 <pre class="stan"><code>data {
   int&lt;lower=1&gt; N;
-  real y[N];
+  array[N] real y;
 }
 parameters {
   real mu;
