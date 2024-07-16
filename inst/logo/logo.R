@@ -22,4 +22,4 @@ p <- powerscale_plot_dens(ps, help_text = FALSE, intervals = NULL) +
         axis.text = element_blank(), axis.ticks = element_blank()) +
   guides(colour = "none", linetype = "none")
 
-sticker(p, package = "priorsense", filename = "man/figures/logo_large.png", p_size = 16, p_color = "#221F21", h_fill = "white", h_color = "black", s_width = 7.5, s_height = 1.3, s_x = -1.15, s_y = 1.05, p_x = 0.7, p_y = 1.33, dpi = 600)
+sticker(p, package = "priorsense", filename = "man/figures/logo.png", p_size = 16, p_color = "#221F21", h_fill = "white", h_color = "black", s_width = 7.5, s_height = 1.3, s_x = -1.15, s_y = 1.05, p_x = 0.7, p_y = 1.33)
