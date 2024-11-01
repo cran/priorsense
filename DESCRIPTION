@@ -1,6 +1,6 @@
 Package: priorsense
 Title: Prior Diagnostics and Sensitivity Analysis
-Version: 1.0.3
+Version: 1.0.4
 Authors@R: c(person("Noa", "Kallioinen", email = "noa.kallioinen@aalto.fi", role = c("aut", "cre", "cph")),
 	     person("Topi", "Paananen", role = c("aut")),
 	     person("Paul-Christian", "Bürkner", role = c("aut")),
@@ -25,7 +25,7 @@ Additional_repositories: https://topipa.r-universe.dev,
         https://stan-dev.r-universe.dev
 URL: https://n-kall.github.io/priorsense/
 NeedsCompilation: no
-Packaged: 2024-10-01 17:59:19 UTC; kallion6
+Packaged: 2024-11-01 12:13:51 UTC; kallion6
 Author: Noa Kallioinen [aut, cre, cph],
   Topi Paananen [aut],
   Paul-Christian Bürkner [aut],
@@ -33,4 +33,4 @@ Author: Noa Kallioinen [aut, cre, cph],
   Frank Weber [ctb]
 Maintainer: Noa Kallioinen <noa.kallioinen@aalto.fi>
 Repository: CRAN
-Date/Publication: 2024-10-01 20:30:02 UTC
+Date/Publication: 2024-11-01 12:30:02 UTC

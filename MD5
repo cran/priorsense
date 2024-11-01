@@ -1,6 +1,6 @@
-8f09cc246bbba940c2ce86fbe07ca28f *DESCRIPTION
+5a1ad04b53524a96164697f2cd53a887 *DESCRIPTION
 df483bcee405aa683da1581da948e8dc *NAMESPACE
-e97597dee1f70809f350fbc4741cfe36 *NEWS.md
+dc40dc943f61fecadfed257ca5eb44f7 *NEWS.md
 72d7c211c21ac8c565cc396f926be280 *R/additional_divergence_measures.R
 ff727fe50c57aaa020f9da56eda5b64d *R/brms-functions.R
 d30216cba83266dcb492e885ab7f7c9c *R/cjs.R
@@ -18,7 +18,7 @@ f042fd66286df4901827e549cf7d754c *R/measure_divergence.R
 01bd418d2295f22075ba1d8b14dbb55c *R/plots.R
 76047c657def048c91121b8350aedb79 *R/powerscale.R
 0610a14945d1c158f128ce42bf2535fa *R/powerscale_derivative.R
-eeb039ea5e25940749c3960c57601655 *R/powerscale_gradients.R
+24b6221ff59d74207c936eecc44a4469 *R/powerscale_gradients.R
 09b66bc575a9a29c6b04ff8fe79f29de *R/powerscale_sensitivity.R
 6ac2c82bbad193e796fe526b83fbb8c8 *R/powerscale_sequence.R
 cf0fb7c9c86d9b29b78ee9cab91fc56e *R/print.R
@@ -35,7 +35,7 @@ fef6aaeca05698a2c7693fc34561929d *R/sysdata.rda
 3d5ca37a3e40204a9ffd6693efca0627 *inst/CITATION
 434ccd668479dfa05cf54697deabd623 *inst/doc/powerscaling.R
 aec52d516dfab76f7b643df71a6f1c2f *inst/doc/powerscaling.Rmd
-a89907bb65138ad53e633418ba22c56e *inst/doc/powerscaling.html
+edf83001f35909302d031355ec8d35a4 *inst/doc/powerscaling.html
 2ea05310bfb8bd66aad0d6bd95e54021 *inst/logo/logo.R
 e93121f4b2bd706f26b457f0901410fe *man/cjs_dist.Rd
 1ebfc4479b55da9abf298c4baf66d75b *man/create-priorsense-data.Rd
