@@ -27,6 +27,8 @@ powerscale_sensitivity(x, ...)
   prediction = NULL,
   prior_selection = NULL,
   likelihood_selection = NULL,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
   num_args = NULL,
   ...
 )
@@ -66,8 +68,9 @@ powerscale_sensitivity(x, ...)
 
 \item{upper_alpha}{Upper alpha value for gradient calculation.}
 
-\item{div_measure}{The divergence measure to use. The
-following methods are implemented:
+\item{div_measure}{Character (case sensitive) specifying the
+divergence measure to use. The following methods are
+implemented:
 \itemize{
 \item \code{"cjs_dist"}: Cumulative Jensen-Shannon distance. Default
 method. See function \code{cjs_dist} for more details.
@@ -106,9 +109,21 @@ perform before sensitivity analysis. Either "scale" or "whiten".}
 \item{prediction}{Function taking the model fit and returning a
 draws_df of predictions to be appended to the posterior draws}
 
-\item{prior_selection}{Numeric vector of prior partitions to include in power-scaling. Default is NULL, which takes all partitions.}
+\item{prior_selection}{Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (specified by \code{log_prior_name}) with an \verb{_}
+between them. If numeric, then it is appended inside \verb{[]}.}
 
-\item{likelihood_selection}{Numeric vector of likelihood partitions to include in power-scaling. Default is NULL, which takes all partitions.}
+\item{likelihood_selection}{Vector specifying partitions of component to be
+included in power-scaling. Default is NULL, which takes all
+partitions. If this is a character, then it is appended to the
+variable name (specified by \code{log_lik_name}) with an \verb{_}
+between them. If numeric, then it is appended inside \verb{[]}.}
+
+\item{log_prior_name}{Character (case sensitive) specifying name of the variable storing the log prior evaluations}
+
+\item{log_lik_name}{Character (case sensitive) specifying name of the variable storing the log likelihood evaluations}
 
 \item{num_args}{(named list) Optional arguments passed to
 \link[tibble:num]{num()} for pretty printing of summaries. Can be

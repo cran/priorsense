@@ -1,3 +1,4 @@
+##' @srrstats {BS6.0} print method implemented
 ##' @export
 print.powerscaling_details <- function(x, ...) {
 
@@ -14,7 +15,7 @@ print.powerscaling_details <- function(x, ...) {
       "moment-matched\n",
       pareto_k_print,
       paste("pareto-kf",
-            round(pareto_kf, digits = 3),
+            round(pareto_kf, digits = 2),
             "\n")
     )
   }
@@ -23,6 +24,7 @@ print.powerscaling_details <- function(x, ...) {
     "\npower-scaling\n",
     paste("alpha:", x$alpha, "\n"),
     paste("scaled component:", x$component, "\n"),
+    "selection:", x$selection, "\n",
     pareto_k_print,
     paste("pareto-k threshold:", round(pareto_k_threshold, 2), "\n"),
     paste("resampled:", x$resampled, "\n"),
@@ -76,21 +78,22 @@ print.powerscaled_sequence <- function(x, ...) {
 
 
 ##' @export
-print.powerscaled_sensitivity_summary <- function(x, ..., num_args = NULL) {
+print.powerscaled_sensitivity_summary <- function(x, digits = 3, ...) {
 
-  num_args <- num_args %||% attr(x, "num_args")
+  cat(paste0("Sensitivity based on ", attr(x, "div_measure"), "\n"))
+  cat(paste0("Prior selection: ", ifelse(is.null(attr(x, "prior_selection")), "all priors", paste0(attr(x, "prior_selection"), collapse = ", ")), "\n"))
+  cat(paste0("Likelihood selection: ", ifelse(is.null(attr(x, "likelihood_selection")), "all data", paste0(attr(x, "likelihood_selection"), collapse = ", ")), "\n"))
+  cat("\n")
+  print.data.frame(
+    as.data.frame(
+      lapply(x, function(c) if (is.numeric(c)) round(c, digits) else c)
+    ),
+    row.names = FALSE
+  )
 
-  for (i in seq_cols(x)) {
-    if (is.numeric(x[[i]])) {
-      x[[i]] <- do.call(tibble::set_num_opts, c(list(x[[i]]), num_args))
-    }
-  }
-  cat(paste0("Sensitivity based on ", attr(x, "div_measure"), ":\n"))
-
-  NextMethod()
   if (!is.null(attr(x, "loadings"))) {
     cat("Factor loadings:\n")
-    print(round(attr(x, "loadings"), 2))
+    print(round(attr(x, "loadings"), digits = digits))
   }
   invisible(x)
 }
