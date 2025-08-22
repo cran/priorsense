@@ -35,7 +35,8 @@ test_that("plots contain expected data", {
   )
   expect_equal(
     colnames(psq$data),
-    c("variable", ".powerscale_alpha", "pareto_k_threshold", "pareto_k", "component", "quantity", "value", "id", "pareto_k_value")
+    c("variable", ".powerscale_alpha", "pareto_k_threshold",
+      "pareto_k", "component", "quantity", "value", "id", "pareto_k_value")
   )
 
   expect_equal(
@@ -100,9 +101,38 @@ test_that("pagination of plots works as expected", {
         variables_per_page = 2 
       ), 9)
 
+    if (packageVersion("ggplot2") >= "4.0.0") {
     expect_length(
       powerscale_plot_quantities(
         ps,
         variables_per_page = Inf
-      ), 11)
+      ), 1)
+    } else {
+      expect_length(
+        powerscale_plot_quantities(
+          ps,
+          variables_per_page = Inf
+        ), 11)
+    }
 })
+
+
+
+#' @srrstats {EA6.1} vdiffr used for all types of plots
+ps_normal <- powerscale_sequence(example_powerscale_model()$draws)
+
+vdiffr::expect_doppelganger(
+  "Normal model density plot",
+  powerscale_plot_dens(ps_normal)
+)
+
+
+vdiffr::expect_doppelganger(
+  "Normal model ecdf plot",
+  powerscale_plot_ecdf(ps_normal)
+)
+
+vdiffr::expect_doppelganger(
+  "Normal model quantities plot",
+  powerscale_plot_quantities(ps_normal)
+)

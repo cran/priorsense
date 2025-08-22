@@ -54,7 +54,6 @@ jags_fit <- jags(
 powerscale_sensitivity(jags_fit)
 
 
-
 ## -----------------------------------------------------------------------------
 #| message: false
 #| warning: false
