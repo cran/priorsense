@@ -8,6 +8,7 @@
 ##' @param x Model fit object or priorsense_data object.
 ##' @param ... Further arguments passed to functions.
 ##' @param variable Character vector of variables to check.
+##' @param variables alias of `variable`.
 ##' @param lower_alpha Lower alpha value for gradient calculation.
 ##' @param upper_alpha Upper alpha value for gradient calculation.
 ##' @param component Character vector specifying component(s) to scale
@@ -37,30 +38,32 @@ powerscale_sensitivity <- function(x, ...) {
 
 ##' @rdname powerscale-sensitivity
 ##' @export
-powerscale_sensitivity.default <- function(x,
-                                           variable = NULL,
-                                           lower_alpha = 0.99,
-                                           upper_alpha = 1.01,
-                                           div_measure = "cjs_dist",
-                                           measure_args = list(),
-                                           component = c(
-                                             "prior",
-                                             "likelihood"
-                                           ),
-                                           sensitivity_threshold = 0.05,
-                                           moment_match = FALSE,
-                                           k_threshold = 0.5,
-                                           resample = FALSE,
-                                           transform = NULL,
-                                           prediction = NULL,
-                                           prior_selection = NULL,
-                                           likelihood_selection = NULL,
-                                           log_prior_name = "lprior",
-                                           log_lik_name = "log_lik",
-                                           num_args = NULL,
-                                           ...
-                                           ) {
-
+powerscale_sensitivity.default <- function(
+  x,
+  variable = NULL,
+  variables = NULL,
+  lower_alpha = 0.99,
+  upper_alpha = 1.01,
+  div_measure = "cjs_dist",
+  measure_args = list(),
+  component = c(
+    "prior",
+    "likelihood"
+  ),
+  sensitivity_threshold = 0.05,
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  transform = NULL,
+  prediction = NULL,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
+  log_prior_name = "lprior",
+  log_lik_name = "log_lik",
+  separator = "_",
+  num_args = NULL,
+  ...
+) {
   psd <- create_priorsense_data(
     x = x,
     log_prior_name = log_prior_name,
@@ -71,6 +74,7 @@ powerscale_sensitivity.default <- function(x,
   powerscale_sensitivity.priorsense_data(
     psd,
     variable = variable,
+    variables = variables,
     lower_alpha = lower_alpha,
     upper_alpha = upper_alpha,
     div_measure = div_measure,
@@ -84,38 +88,43 @@ powerscale_sensitivity.default <- function(x,
     prediction = prediction,
     prior_selection = prior_selection,
     likelihood_selection = likelihood_selection,
+    separator = separator,
     num_args = num_args,
     ...
   )
-
 }
 
 ##' @rdname powerscale-sensitivity
 ##' @export
-powerscale_sensitivity.priorsense_data <- function(x,
-                                                   variable = NULL,
-                                                   lower_alpha = 0.99,
-                                                   upper_alpha = 1.01,
-                                                   div_measure = "cjs_dist",
-                                                   measure_args = list(),
-                                                   component = c(
-                                                     "prior",
-                                                     "likelihood"
-                                                   ),
-                                                   sensitivity_threshold = 0.05,
-                                                   moment_match = FALSE,
-                                                   k_threshold = 0.5,
-                                                   resample = FALSE,
-                                                   transform = NULL,
-                                                   prediction = NULL,
-                                                   prior_selection = NULL,
-                                                   likelihood_selection = NULL,
-                                                   num_args = NULL,
-                                                   ...) {
+powerscale_sensitivity.priorsense_data <- function(
+  x,
+  variable = NULL,
+  variables = NULL,
+  lower_alpha = 0.99,
+  upper_alpha = 1.01,
+  div_measure = "cjs_dist",
+  measure_args = list(),
+  component = c(
+    "prior",
+    "likelihood"
+  ),
+  sensitivity_threshold = 0.05,
+  moment_match = FALSE,
+  k_threshold = 0.5,
+  resample = FALSE,
+  transform = NULL,
+  prediction = NULL,
+  prior_selection = NULL,
+  likelihood_selection = NULL,
+  separator = "_",
+  num_args = NULL,
+  ...
+) {
   component <- tolower(component)
-  
+
   # input checks
   checkmate::assertCharacter(variable, null.ok = TRUE)
+  checkmate::assertCharacter(variables, null.ok = TRUE)
   checkmate::assertNumber(lower_alpha, lower = 0, upper = 1)
   checkmate::assertNumber(upper_alpha, lower = 1)
   checkmate::assertCharacter(div_measure, len = 1)
@@ -127,6 +136,21 @@ powerscale_sensitivity.priorsense_data <- function(x,
   checkmate::assertLogical(resample, len = 1)
   checkmate::assertCharacter(transform, null.ok = TRUE, len = 1)
   checkmate::assertFunction(prediction, null.ok = TRUE)
+  checkmate::assertCharacter(separator)
+
+  if (!is.null(variable) && !is.null(variables)) {
+    checkmate::assert(
+      if (identical(variable, variables)) {
+        TRUE
+      } else {
+        "must be identical if both provided"
+      },
+      .var.name = "`variable` and `variables`"
+    )
+  }
+  if (is.null(variable)) {
+    variable <- variables
+  }
 
   gradients <- powerscale_gradients(
     x = x,
@@ -143,6 +167,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
     prediction = prediction,
     prior_selection = prior_selection,
     likelihood_selection = likelihood_selection,
+    separator = separator,
     ...
   )
 
@@ -157,8 +182,10 @@ powerscale_sensitivity.priorsense_data <- function(x,
     prior_sense <- NA
   }
 
-  varnames <- unique(c(as.character(gradients$divergence$prior$variable),
-                       as.character(gradients$divergence$likelihood$variable)))
+  varnames <- unique(c(
+    as.character(gradients$divergence$prior$variable),
+    as.character(gradients$divergence$likelihood$variable)
+  ))
 
   sense <- data.frame(
     variable = varnames,
@@ -170,11 +197,15 @@ powerscale_sensitivity.priorsense_data <- function(x,
   # likelihood
 
   sense$diagnosis <- ifelse(
-    sense$prior >= sensitivity_threshold & sense$likelihood >= sensitivity_threshold, "potential prior-data conflict",
-    ifelse(sense$prior > sensitivity_threshold & sense$likelihood < sensitivity_threshold,
-           "potential strong prior / weak likelihood",
-           "-"
-           )
+    sense$prior >= sensitivity_threshold &
+      sense$likelihood >= sensitivity_threshold,
+    "potential prior-likelihood conflict",
+    ifelse(
+      sense$prior > sensitivity_threshold &
+        sense$likelihood < sensitivity_threshold,
+      "potential strong prior / weak likelihood",
+      "-"
+    )
   )
 
   out <- sense
@@ -193,10 +224,7 @@ powerscale_sensitivity.priorsense_data <- function(x,
 
 ##' @rdname powerscale-sensitivity
 ##' @export
-powerscale_sensitivity.CmdStanFit <- function(x,
-                                              ...
-                                              ) {
-
+powerscale_sensitivity.CmdStanFit <- function(x, ...) {
   psd <- create_priorsense_data.CmdStanFit(x)
 
   powerscale_sensitivity.priorsense_data(
@@ -207,10 +235,7 @@ powerscale_sensitivity.CmdStanFit <- function(x,
 
 ##' @rdname powerscale-sensitivity
 ##' @export
-powerscale_sensitivity.stanfit <- function(x,
-                                           ...
-                                           ) {
-
+powerscale_sensitivity.stanfit <- function(x, ...) {
   psd <- create_priorsense_data.stanfit(x, ...)
 
   powerscale_sensitivity.priorsense_data(

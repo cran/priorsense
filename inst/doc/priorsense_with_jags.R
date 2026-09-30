@@ -12,46 +12,60 @@ library(R2jags)
 library(posterior)
 library(priorsense)
 
+set.seed(123)
+
 
 ## -----------------------------------------------------------------------------
-model_string <- "
-model {
-  for(n in 1:N) {
-    y[n] ~ dnorm(mu, tau)
-    log_lik[n] <- likelihood_alpha * logdensity.norm(y[n], mu, tau)
-  }
-  mu ~ dnorm(0, 1)
-  sigma ~ dnorm(0, 1 / 2.5^2) T(0,)
-  tau <- 1 / sigma^2
-  lprior <- prior_alpha * logdensity.norm(mu, 0, 1) + logdensity.norm(sigma, 0, 1 / 2.5^2)
-}
-"
+model <- example_powerscale_model("univariate_normal", language = "jags")
+
+
+## -----------------------------------------------------------------------------
+#| echo: false
+#| results: asis
+cat("```\n")
+cat(model$model_code)
+cat("```")
+
+
+## -----------------------------------------------------------------------------
+#| echo: false
+#| message: false
+#| warning: false
+fit <- readRDS(system.file("extdata", "univariate_normal_jags.RDS", package = "priorsense"))
 
 
 ## -----------------------------------------------------------------------------
 #| message: false
 #| warning: false
-model_con <- textConnection(model_string)
-data <- example_powerscale_model()$data
-
-set.seed(123)
-
-# monitor parameters of interest along with log-likelihood and log-prior
-variables <- c("mu", "sigma", "log_lik", "lprior")
-
-jags_fit <- jags(
-  data,
-  model.file = model_con,
-  parameters.to.save = variables,
-  n.chains = 4,
-  DIC = FALSE,
-  quiet = TRUE,
-  progress.bar = "none"
-  )
+#| eval: false
+# model_con <- textConnection(model$model_code)
+# data <- model$data
+# 
+# # monitor parameters of interest along with log-likelihood and log-prior
+# variables <- c("mu", "sigma", "log_lik", "lprior", "lprior_mu", "lprior_sigma")
+# 
+# fit <- R2jags::jags(
+#   data = data,
+#   model.file = model_con,
+#   parameters.to.save = variables,
+#   n.chains = 4,
+#   DIC = FALSE,
+#   quiet = TRUE,
+#   progress.bar = "none",
+#   jags.seed = 123
+# )
 
 
 ## -----------------------------------------------------------------------------
-powerscale_sensitivity(jags_fit)
+powerscale_sensitivity(fit)
+
+
+## -----------------------------------------------------------------------------
+powerscale_sensitivity(fit, prior_selection = "sigma")
+
+
+## -----------------------------------------------------------------------------
+powerscale_sensitivity(fit, prior_selection = "mu")
 
 
 ## -----------------------------------------------------------------------------
@@ -59,5 +73,5 @@ powerscale_sensitivity(jags_fit)
 #| warning: false
 #| fig-width: 6
 #| fig-height: 4
-powerscale_plot_dens(jags_fit)
+powerscale_plot_dens(fit)
 

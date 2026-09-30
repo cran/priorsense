@@ -1,0 +1,24 @@
+---
+title: "Published papers using priorsense"
+vignette: >
+  %\VignetteIndexEntry{Published papers using priorsense}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+bibliography: papers.bib
+csl: papers.csl
+nocite: |
+  @*
+---
+
+The following published papers have included sensitivity checks using
+priorsense.
+
+
+::: {#refs}
+:::
+
+<style>
+#refs .csl-entry {
+  margin-bottom: 1.25rem;
+}
+</style>

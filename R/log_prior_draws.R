@@ -1,6 +1,6 @@
 ##' Extract log prior draws
 ##'
-##' Extract log likelihood from fitted model and return as a draws
+##' Extract log prior from fitted model and return as a draws
 ##' object.
 ##'
 ##' @name log_prior_draws
@@ -26,46 +26,28 @@ log_prior_draws <- function(x, ...) {
 
 ##' @rdname log_prior_draws
 ##' @export
-log_prior_draws.stanfit <- function(x, joint = FALSE,
-                                    log_prior_name = "lprior", ...) {
-
-  if (!inherits(x, "stanfit"))
+log_prior_draws.stanfit <- function(
+  x,
+  joint = FALSE,
+  log_prior_name = "lprior",
+  ...
+) {
+  if (!inherits(x, "stanfit")) {
     stop("Not a stanfit object.", call. = FALSE)
-  if (x@mode != 0)
-    stop("Stan model does not contain posterior draws.",
-         call. = FALSE)
-  if (!requireNamespace("rstan", quietly = TRUE))
+  }
+  if (x@mode != 0) {
+    stop("Stan model does not contain posterior draws.", call. = FALSE)
+  }
+  if (!requireNamespace("rstan", quietly = TRUE)) {
     stop("Please load the 'rstan' package.", call. = FALSE)
-
-  checkmate::assert_logical(joint, len = 1)
-  checkmate::assert_character(log_prior_name, len = 1)
-  
-  log_prior <- posterior::subset_draws(
-    posterior::as_draws_array(x),
-    variable = paste0("^", log_prior_name), regex = TRUE
-  )
-
-  if (joint) {
-    log_prior <- rowsums_draws(log_prior)
-    posterior::variables(log_prior) <- log_prior_name
   }
 
-  return(log_prior)
-}
-
-##' @rdname log_prior_draws
-##' @export
-log_prior_draws.CmdStanFit <- function(x, joint = FALSE,
-                                       log_prior_name = "lprior", ...) {
-
   checkmate::assert_logical(joint, len = 1)
-  checkmate::assert_character(log_prior_name, len = 1)
+  checkmate::assert_character(log_prior_name)
 
-  all_draws <- x$draws()
-  
   log_prior <- posterior::subset_draws(
-    all_draws,
-    variables = paste0("^", log_prior_name),
+    posterior::as_draws_array(x),
+    variable = paste0("^", log_prior_name),
     regex = TRUE
   )
 
@@ -74,26 +56,57 @@ log_prior_draws.CmdStanFit <- function(x, joint = FALSE,
     posterior::variables(log_prior) <- log_prior_name
   }
 
-  
   return(log_prior)
 }
 
 ##' @rdname log_prior_draws
 ##' @export
-log_prior_draws.draws <- function(x, joint = FALSE,
-                                  log_prior_name = "lprior", ...) {
-
+log_prior_draws.CmdStanFit <- function(
+  x,
+  joint = FALSE,
+  log_prior_name = "lprior",
+  ...
+) {
   checkmate::assert_logical(joint, len = 1)
   checkmate::assert_character(log_prior_name, len = 1)
-  
-  log_prior <- posterior::subset_draws(x,
-                                       variable = paste0("^", log_prior_name),
-                                       regex = TRUE)
+
+  all_draws <- x$draws()
+
+  log_prior <- posterior::subset_draws(
+    all_draws,
+    variable = paste0("^", log_prior_name),
+    regex = TRUE
+  )
 
   if (joint) {
     log_prior <- rowsums_draws(log_prior)
     posterior::variables(log_prior) <- log_prior_name
   }
-  
+
+  return(log_prior)
+}
+
+##' @rdname log_prior_draws
+##' @export
+log_prior_draws.draws <- function(
+  x,
+  joint = FALSE,
+  log_prior_name = "lprior",
+  ...
+) {
+  checkmate::assert_logical(joint, len = 1)
+  checkmate::assert_character(log_prior_name)
+
+  log_prior <- posterior::subset_draws(
+    x,
+    variable = paste0("^", log_prior_name),
+    regex = TRUE
+  )
+
+  if (joint) {
+    log_prior <- rowsums_draws(log_prior)
+    posterior::variables(log_prior) <- log_prior_name
+  }
+
   return(log_prior)
 }
